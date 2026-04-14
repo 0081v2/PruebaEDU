@@ -13,6 +13,15 @@
     })(window, document, "clarity", "script", "w13mdtrtn2");
 </script>
   </head>
+  ...
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w13mdtrtn2");
+</script>
   <body>
     <header class="header">
       <div class="header-top">
@@ -27,7 +36,7 @@
       </div>
       <!-- Flujo confuso: “Restaurantes” y “Categorías” parecen lo mismo pero son pasos distintos -->
       <div class="steps" aria-label="Pasos">
-        <span class="step active" data-step-indicator="1">
+        <button type="button" class="step active" data-step-target="restaurantes" data-step-indicator="1">
           <img
             src="./assets/ico-ubicacion.svg"
             width="14"
@@ -36,8 +45,8 @@
             class="step-ico"
           />
           1. Local
-        </span>
-        <span class="step" data-step-indicator="2">
+        </button>
+        <button type="button" class="step" data-step-target="menu" data-step-indicator="2">
           <img
             src="./assets/ico-menu.svg"
             width="14"
@@ -46,8 +55,8 @@
             class="step-ico"
           />
           2. Menú
-        </span>
-        <span class="step subtle-step" data-step-indicator="3">
+        </button>
+        <button type="button" class="step subtle-step" data-step-target="resumen" data-step-indicator="3">
           <img
             src="./assets/ico-lista.svg"
             width="14"
@@ -56,9 +65,12 @@
             class="step-ico"
           />
           Resumen
-        </span>
+        </button>
       </div>
+      <div class="order-status" id="order-status" aria-live="polite">Aún no hay pedidos.</div>
     </header>
+
+    <div id="feedback" class="feedback" aria-live="polite" hidden></div>
 
     <main class="main">
       <!-- Paso 1: elegir restaurante (y filtro por categoría poco claro) -->
@@ -90,19 +102,23 @@
           <!-- Botón resumen poco visible -->
           <button type="button" id="btn-carrito" class="btn btn-faint">
             Ver resumen del pedido
+            <span class="cart-badge" id="cart-count" hidden aria-live="polite"></span>
           </button>
         </div>
       </section>
 
       <!-- Paso 3: resumen -->
       <section id="step-resumen" class="panel" hidden>
+        <button type="button" class="link-back" id="btn-volver-menu">
+          &larr; Volver al menú
+        </button>
         <h2>Tu pedido</h2>
         <p class="muted">
-          Revise antes de confirmar. Para añadir más, debe volver atrás sin
-          etiqueta clara.
+          Revise antes de confirmar. Para añadir más, puede volver al menú.
         </p>
         <ul id="lista-resumen" class="lista-resumen"></ul>
         <p id="resumen-vacio" class="muted">Nada seleccionado.</p>
+        <p class="summary-note muted">Puedes eliminar platos desde aquí si quieres cambiar tu pedido.</p>
         <p class="total-line">
           Total estimado: <strong id="total-delivery">0,00 €</strong>
         </p>
